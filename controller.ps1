@@ -2,20 +2,34 @@
 [CmdletBinding()]
 param(
     [Parameter(Position=0)]
-    [ValidateSet("build-client", "print-something")]
+    [ValidateSet("build-client", "build-server")]
     [string]$Action
 )
 
+$env:Path += ";F:\unity-mod\azur-promilia\github-khanhncm-azur-promilia\zig\zig-x86_64-windows-0.16.0"
+(Get-Command zig).Definition
+zig version
+
 switch ($Action) {
     "build-client" {
-        Set-Alias -Name zig -Value ".\zig\zig-x86_64-windows-0.16.0\zig.exe"
-        (Get-Command zig).Definition
-        zig version
-        zig build -Doptimize=ReleaseSmall
+        Push-Location -Path .\client\evergreen
+        try {
+            zig build -Doptimize=ReleaseSmall
+        }
+        finally {
+            Pop-Location
+        }
     }
-    "print-something" {
-        Write-Host "Verbose output switch was passed!"
-    }
+    "build-server" {
+        Push-Location -Path .\server\zetsa
+        try {
+            Start-Process zig -ArgumentList "build run-cdnsv -Doptimize=ReleaseSmall" -NoNewWindow
+            zig build run-gamesv -Doptimize=ReleaseSmall
+        }
+        finally {
+            Pop-Location
+        }
+8   }
     default {
         Write-Host "Unknown action: '$Action'" -ForegroundColor Red
     }
