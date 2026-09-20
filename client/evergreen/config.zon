@@ -1,0 +1,5 @@
+.{
+    .cdnsv_url = "http://127.0.0.1:20001",
+    .logsv_url = "http://127.0.0.1:20003",
+    .log_http_requests = true,
+}
