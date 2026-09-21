@@ -1,3 +1,5 @@
+const std = @import("std");
+
 pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
     const target = b.standardTargetOptions(.{ .default_target = .{ .os_tag = .windows, .cpu_arch = .x86_64 } });
@@ -22,5 +24,3 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(exe);
 }
 
-const Build = std.Build;
-const std = @import("std");
