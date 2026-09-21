@@ -227,14 +227,12 @@ fn loadLibrary(name: [:0]const u8) *winapi.HMODULE {
 
 fn printDoro(io: std.Io) void {
     const stderr = std.Io.File.stderr();
-    const doro = @import("doro");
-
     stderr.writeStreamingAll(
         io,
         if (stderr.enableAnsiEscapeCodes(io))
-            doro.colorful
+            "\x1b[95mDoro-colorFUL\x1b[0m\n" // colorful
         else |_|
-            doro.colorless,
+            "Doro-colorLESS\n", // colorless / fallback
     ) catch {};
 }
 
